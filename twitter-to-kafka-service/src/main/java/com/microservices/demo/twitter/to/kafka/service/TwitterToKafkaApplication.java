@@ -1,22 +1,29 @@
 package com.microservices.demo.twitter.to.kafka.service;
 
-import com.microservices.demo.twitter.to.kafka.service.config.TwitterToKafkaServiceConfigData;
+import com.microservices.demo.config.TwitterToKafkaServiceConfigData;
+import com.microservices.demo.twitter.to.kafka.service.init.StreamInitializer;
+import com.microservices.demo.twitter.to.kafka.service.runner.StreamRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "com.microservices.demo")
 public class TwitterToKafkaApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TwitterToKafkaApplication.class);
-    private final TwitterToKafkaServiceConfigData twitterToKafkaServiceConfigData;
+    private final StreamInitializer streamInitializer;
 
-    public TwitterToKafkaApplication(TwitterToKafkaServiceConfigData configData) {
-        this.twitterToKafkaServiceConfigData = configData;
+    private final StreamRunner streamRunner;
+
+    public TwitterToKafkaApplication(StreamInitializer streamInitializer, StreamRunner streamRunner) {
+        this.streamInitializer = streamInitializer;
+        this.streamRunner = streamRunner;
     }
 
     public static void main(String[] args) {
@@ -24,9 +31,9 @@ public class TwitterToKafkaApplication {
     }
 
     @PostConstruct
-    public void init() {
+    public void init() throws Exception{
         LOGGER.info("App is starting...");
-        LOGGER.info(Arrays.toString(twitterToKafkaServiceConfigData.getKeywordsInTwitter().toArray(new String[0])));
-        LOGGER.info(twitterToKafkaServiceConfigData.getWelcomeMessage());
+        streamInitializer.init();
+        streamRunner.start();
     }
 }
