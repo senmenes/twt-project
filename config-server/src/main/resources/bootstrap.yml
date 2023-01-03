@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/senmenes/spring-cloud-config-server-repository.git
+          default-label: main
+          username: senmenes
+          password: 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
+          clone-on-start: true
+    fail-fast: true
+
+  security:
+    user:
+      name: spring_cloud_user
+      password: _SecPass!
