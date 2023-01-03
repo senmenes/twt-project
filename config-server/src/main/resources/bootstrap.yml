@@ -8,11 +8,15 @@ spring:
           uri: https://github.com/senmenes/spring-cloud-config-server-repository.git
           default-label: main
           username: senmenes
-          password: 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
+          password: ENC(duqYYhOnemiFS4/42QSNMxLFDA/NiEB0/cPy1GrEQkO/ygODkjbe4PppSdZnvvXPp3TpDwYaQrRQVIQuW54DMkScZnOJgXis3ewfkan4zmU=)
           clone-on-start: true
     fail-fast: true
 
   security:
     user:
       name: spring_cloud_user
-      password: _SecPass!
+      password: ENC(YQI5XNnYqpBMH2HFCELIgDyx0OtZGlbzMwn6q5+iqfyeJOaaItI+dQ3G48SSK50r)
+
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENC_KEY}
