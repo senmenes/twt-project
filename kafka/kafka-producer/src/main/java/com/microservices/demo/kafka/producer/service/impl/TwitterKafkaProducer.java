@@ -1,7 +1,7 @@
-package com.microservices.demo.kafka.producer.config.service.impl;
+package com.microservices.demo.kafka.producer.service.impl;
 
 import com.microservices.demo.kafka.avro.model.TwitterAvroModel;
-import com.microservices.demo.kafka.producer.config.service.KafkaProducer;
+import com.microservices.demo.kafka.producer.service.KafkaProducer;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import javax.annotation.PreDestroy;
 
 
 @Service
-public class TwitterKafkaProducer implements KafkaProducer<Long, TwitterAvroModel>{
+public class TwitterKafkaProducer implements KafkaProducer<Long, TwitterAvroModel> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TwitterKafkaProducer.class);
 

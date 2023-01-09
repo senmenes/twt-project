@@ -5,6 +5,7 @@ services:
     image: ${GROUP_ID}/config.server:${SERVICE_VERSION:-latest}
     ports:
       - "5006:5006"
+      - "8888:8888"
     depends_on:
       - zookeeper
       - kafka-broker-3
