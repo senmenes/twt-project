@@ -9,7 +9,7 @@ services:
       - discovery.seed_hosts=elastic-2,elastic-3
       - cluster.initial_master_nodes=elastic-1,elastic-2,elastic-3
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
     ulimits:
       memlock:
         soft: -1
@@ -28,7 +28,7 @@ services:
       - discovery.seed_hosts=elastic-1,elastic-3
       - cluster.initial_master_nodes=elastic-1,elastic-2,elastic-3
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
     ulimits:
       memlock:
         soft: -1
@@ -45,7 +45,7 @@ services:
       - discovery.seed_hosts=elastic-1,elastic-2
       - cluster.initial_master_nodes=elastic-1,elastic-2,elastic-3
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
     ulimits:
       memlock:
         soft: -1

@@ -51,6 +51,22 @@
             <groupId>com.microservices</groupId>
             <artifactId>kafka-consumer</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.microservices</groupId>
+            <artifactId>elastic-model</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.microservices</groupId>
+            <artifactId>elastic-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.microservices</groupId>
+            <artifactId>elastic-index</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -58,6 +74,19 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <name>${project.groupId}/kafka.to.elastic.service:${project.version}</name>
+                    </image>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build-image</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

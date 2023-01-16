@@ -48,3 +48,40 @@ services:
       - "JASYPT_ENC_KEY=${JASYPT_ENC_KEY}"
     networks:
       - ${GLOBAL_NETWORK:-services}
+
+  kafka-to-elastic-service:
+    image: ${GROUP_ID}/kafka.to.elastic.service:${SERVICE_VERSION:-latest}
+    ports:
+      - "5007:5007"
+    depends_on:
+      - zookeeper
+      - kafka-broker-3
+      - kafka-broker-2
+      - kafka-broker-1
+      - schema-registry
+      - config-server
+      - twitter-to-kafka-service
+      - elastic-1
+      - elastic-2
+      - elastic-3
+    volumes:
+      - "./docker-logs:/workspace/kafka-to-elastic-service/logs"
+      - "./check-kafka-topics-created.sh:/usr/local/bin/check-kafka-topics-created.sh"
+      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
+    user: root
+    entrypoint: [ "check-kafka-topics-created.sh" ]
+    environment:
+      - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007 -Xms64m -Xmx128m"
+      - "LOGGING_LEVEL_COM_MICROSERVICES_DEMO=info"
+      - "LOGGING_LEVEL_ROOT=info"
+      - "KAFKA-CONFIG_TOPIC-NAME=twitter-topic"
+      - "KAFKA-CONFIG_BOOTSTRAP-SERVICE=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
+      - "KAFKA-CONFIG_SCHEMA-REGISTRY-URL=http://schema-registry:8081"
+      - "TWITTER-TO-KAFKA-SERVICE_ENABLE-MOCK-TWEETS=true"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "JASYPT_ENC_KEY=${JASYPT_ENC_KEY}"
+      - "ELASTIC-CONFIG_CONNECTION-URL=http://elastic-1:9200"
+      - "ELASTIC-CONFIG_INDEX-NAME=twitter-index2"
+      - "ELASTIC-CONFIG-USE-ELASTICSEARCH-REPOSITORY=true"
+    networks:
+      - ${GLOBAL_NETWORK:-services}
