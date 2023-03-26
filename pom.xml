@@ -25,7 +25,9 @@
 		<module>config-server</module>
 		<module>kafka-to-elastic-service</module>
         <module>elastic</module>
-    </modules>
+        <module>common-util</module>
+		<module>elastic-query-service</module>
+	</modules>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -213,6 +215,12 @@
 				<version>${spring-cloud-dependencies.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.microservices</groupId>
+				<artifactId>common-util</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>

@@ -81,7 +81,7 @@ services:
       - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
       - "JASYPT_ENC_KEY=${JASYPT_ENC_KEY}"
       - "ELASTIC-CONFIG_CONNECTION-URL=http://elastic-1:9200"
-      - "ELASTIC-CONFIG_INDEX-NAME=twitter-index2"
+      - "ELASTIC-CONFIG_INDEX-NAME=twitter-index"
       - "ELASTIC-CONFIG-USE-ELASTICSEARCH-REPOSITORY=true"
     networks:
       - ${GLOBAL_NETWORK:-services}

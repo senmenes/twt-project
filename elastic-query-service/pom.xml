@@ -9,13 +9,12 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>elastic</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>elastic-index</module>
-        <module>elastic-config</module>
-        <module>elastic-model</module>
-        <module>elastic-query-client</module>
-    </modules>
+    <artifactId>elastic-query-service</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 </project>
