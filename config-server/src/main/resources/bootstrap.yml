@@ -8,7 +8,7 @@ spring:
           uri: https://github.com/senmenes/spring-cloud-config-server-repository.git
           default-label: main
           username: senmenes
-          password: '{cipher}6673ae7e35fcf5108b4b9d932cdea4bdc05b2a7eed1df8186dfaa67477b13bf07906df967eeda33feb5dfa5431a6bb8c8435e64a637533c93307aee07b3d4204'
+          password: '{cipher}224a6a2c3ab2027d49c980415ab081e43bf568c380d0ad14b4898aec887293f012d51c07c3d413ba558cf9cd14f0bd736bc075fa75c07911073a33b19345487dc2940f119487f665b97fa43b0c8f356c1dad8de0da652a3bca3e32314493c379041d1fd8f38face8e063de2174ef731c'
           clone-on-start: true
     fail-fast: true
 
