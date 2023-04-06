@@ -1,4 +1,4 @@
-package com.microservices.elastic.query.client.repository;
+package com.microservices.demo.elastic.query.client.repository;
 
 import com.microservices.demo.elastic.model.index.impl.TwitterIndexModel;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;

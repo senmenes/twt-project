@@ -1,11 +1,11 @@
-package com.microservices.elastic.query.client.service.impl;
+package com.microservices.demo.elastic.query.client.service.impl;
 
 import com.microservices.demo.config.ElasticConfigData;
 import com.microservices.demo.config.ElasticQueryConfigData;
 import com.microservices.demo.elastic.model.index.impl.TwitterIndexModel;
-import com.microservices.elastic.query.client.exception.ElasticQueryException;
-import com.microservices.elastic.query.client.service.ElasticQueryClient;
-import com.microservices.elastic.query.client.util.ElasticQueryUtil;
+import com.microservices.demo.elastic.query.client.exception.ElasticQueryException;
+import com.microservices.demo.elastic.query.client.service.ElasticQueryClient;
+import com.microservices.demo.elastic.query.client.util.ElasticQueryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;

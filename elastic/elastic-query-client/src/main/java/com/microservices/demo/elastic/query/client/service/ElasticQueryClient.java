@@ -1,4 +1,4 @@
-package com.microservices.elastic.query.client.service;
+package com.microservices.demo.elastic.query.client.service;
 
 import com.microservices.demo.elastic.model.index.IndexModel;
 
