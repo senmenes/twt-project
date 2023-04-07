@@ -46,6 +46,7 @@
 		<spring-cloud-dependencies.version>Hoxton.SR9</spring-cloud-dependencies.version>
 		<elastic.version>7.9.1</elastic.version>
 		<spring-validation.version>2.3.4.RELEASE</spring-validation.version>
+		<springdoc-openapi.version>1.5.0</springdoc-openapi.version>
 	</properties>
 
 	<repositories>
@@ -190,6 +191,11 @@
 				<version>${spring-cloud.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-ui</artifactId>
+				<version>${springdoc-openapi.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.projectlombok</groupId>
