@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,9 @@ public class ElasticDocumentController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ElasticDocumentController.class);
 
     private final TwitterElasticQueryService service;
+
+    @Value("${server.port}")
+    private String port;
 
     public ElasticDocumentController(TwitterElasticQueryService service) {
         this.service = service;
@@ -90,7 +94,7 @@ public class ElasticDocumentController {
     @PostMapping("/get-document-by-text")
     public @ResponseBody ResponseEntity<List<ElasticQueryServiceResponseModel>> getDocumentsByText(@RequestBody @Valid ElasticQueryServiceRequestModel requestModel){
         List<ElasticQueryServiceResponseModel> response = service.getDocumentByText(requestModel.getText());
-        LOGGER.info("ES returned {} of documents", response.size());
+        LOGGER.info("ES returned {} of documents on port {}", response.size(), port);
         return ResponseEntity.ok(response);
     }
 

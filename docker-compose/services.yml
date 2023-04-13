@@ -6,16 +6,10 @@ services:
     ports:
       - "5006:5006"
       - "8888:8888"
-    depends_on:
-      - zookeeper
-      - kafka-broker-3
-      - kafka-broker-2
-      - kafka-broker-1
-      - schema-registry
     volumes:
       - "./docker-logs:/workspace/config-server/logs"
     environment:
-      - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006 -Xms64m -Xmx128m"
+      - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006 -Xms32m -Xmx100m"
       - "JASYPT_ENC_KEY=${JASYPT_ENC_KEY}"
     networks:
       - ${GLOBAL_NETWORK:-services}
@@ -37,7 +31,7 @@ services:
     user: root
     entrypoint: [ "check-config-server-started.sh" ]
     environment:
-      - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xms64m -Xmx128m"
+      - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xms32m -Xmx64m"
       - "LOGGING_LEVEL_COM_MICROSERVICES_DEMO=info"
       - "LOGGING_LEVEL_ROOT=info"
       - "KAFKA-CONFIG_TOPIC-NAME=twitter-topic"
@@ -71,7 +65,7 @@ services:
     user: root
     entrypoint: [ "check-kafka-topics-created.sh" ]
     environment:
-      - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007 -Xms64m -Xmx128m"
+      - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007 -Xms32m -Xmx64m"
       - "LOGGING_LEVEL_COM_MICROSERVICES_DEMO=info"
       - "LOGGING_LEVEL_ROOT=info"
       - "KAFKA-CONFIG_TOPIC-NAME=twitter-topic"
@@ -86,25 +80,23 @@ services:
     networks:
       - ${GLOBAL_NETWORK:-services}
 
-  elastic-query-service:
+  elastic-query-service-1:
     image: ${GROUP_ID}/elastic.query.service:${SERVICE_VERSION:-latest}
     ports:
       - "5008:5008"
       - "8183:8183"
     depends_on:
-      - zookeeper
-      - kafka-broker-3
-      - kafka-broker-2
-      - kafka-broker-1
-      - schema-registry
       - config-server
+      - elastic-1
+      - elastic-2
+      - elastic-3
     volumes:
       - "./docker-logs:/workspace/elastic-query-service/logs"
       - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
     user: root
     entrypoint: [ "check-config-server-started.sh" ]
     environment:
-      - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5008 -Xms64m -Xmx128m"
+      - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5008 -Xms32m -Xmx64m"
       - "LOGGING_LEVEL_COM_MICROSERVICES_DEMO=info"
       - "LOGGING_LEVEL_ROOT=info"
       - "ELASTIC-CONFIG_INDEX-NAME=twitter-index"
@@ -113,5 +105,62 @@ services:
       - "SERVER_SERVLET_CONTEXT-PATH=/elastic-query-service"
       - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
       - "JASYPT_ENC_KEY=${JASYPT_ENC_KEY}"
+    networks:
+      - ${GLOBAL_NETWORK:-services}
+
+  elastic-query-service-2:
+    image: ${GROUP_ID}/elastic.query.service:${SERVICE_VERSION:-latest}
+    ports:
+      - "5009:5009"
+      - "8185:8185"
+    depends_on:
+      - config-server
+      - elastic-1
+      - elastic-2
+      - elastic-3
+    volumes:
+      - "./docker-logs:/workspace/elastic-query-service/logs"
+      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
+    user: root
+    entrypoint: [ "check-config-server-started.sh" ]
+    environment:
+      - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5009 -Xms32m -Xmx64m"
+      - "LOGGING_LEVEL_COM_MICROSERVICES_DEMO=info"
+      - "LOGGING_LEVEL_ROOT=info"
+      - "ELASTIC-CONFIG_INDEX-NAME=twitter-index"
+      - "ELASTIC-CONFIG_CONNECTION-URL=http://elastic-1:9200"
+      - "SERVER_PORT=8185"
+      - "SERVER_SERVLET_CONTEXT-PATH=/elastic-query-service"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "JASYPT_ENC_KEY=${JASYPT_ENC_KEY}"
+    networks:
+      - ${GLOBAL_NETWORK:-services}
+
+  elastic-query-web-client:
+    image: ${GROUP_ID}/elastic.query.web.client:${SERVICE_VERSION:-latest}
+    ports:
+      - "5010:5010"
+      - "8184:8184"
+    depends_on:
+      - config-server
+    volumes:
+      - "./docker-logs:/workspace/elastic-query-web-client/logs"
+      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
+    user: root
+    entrypoint: [ "check-config-server-started.sh" ]
+    environment:
+      - "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010 -Xms32m -Xmx64m"
+      - "LOGGING_LEVEL_COM_MICROSERVICES_DEMO=info"
+      - "LOGGING_LEVEL_ROOT=info"
+      - "SERVER_SERVLET_CONTEXT-PATH=/elastic-query-web-client"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "ELASTIC-QUERY-WEB-CLIENT_WEB-CLIENT_BASE-URL=http://elastic-query-service/elastic-query-service/documents"
+      - "ELASTIC-QUERY-WEB-CLIENT_WEB-CLIENT_INSTANCES_0_ID=elastic-query-service-1"
+      - "ELASTIC-QUERY-WEB-CLIENT_WEB-CLIENT_INSTANCES_0_HOST=elastic-query-service-1"
+      - "ELASTIC-QUERY-WEB-CLIENT_WEB-CLIENT_INSTANCES_0_PORT=8183"
+      - "ELASTIC-QUERY-WEB-CLIENT_WEB-CLIENT_INSTANCES_1_ID=elastic-query-service-2"
+      - "ELASTIC-QUERY-WEB-CLIENT_WEB-CLIENT_INSTANCES_1_HOST=elastic-query-service-2"
+      - "ELASTIC-QUERY-WEB-CLIENT_WEB-CLIENT_INSTANCES_1_PORT=8185"
+      - "ENCRYPT_KEY=${JASYPT_ENC_KEY}"
     networks:
       - ${GLOBAL_NETWORK:-services}

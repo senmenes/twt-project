@@ -7,6 +7,7 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.apache.http.HttpHeaders;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -18,6 +19,7 @@ import reactor.netty.tcp.TcpClient;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
+@LoadBalancerClient(name = "elastic-query-service", configuration = ElasticQueryServiceInstanceListSupplierConfig.class)
 public class WebClientConfig {
     private final ElasticQueryWebClientConfigData.WebClient webClientConfigData;
     private final ElasticUserConfigData userConfigData;
@@ -28,7 +30,7 @@ public class WebClientConfig {
     }
 
     @LoadBalanced
-    @Bean("webClientBuilder")
+    @Bean(value = "webClientBuilder")
     WebClient.Builder webClientBuilder() {
         return WebClient.builder()
                 .filter(ExchangeFilterFunctions
